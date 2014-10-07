@@ -11,6 +11,7 @@
     <properties>
         <appengine.app.version>1</appengine.app.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring.framework.version>3.2.9.RELEASE</spring.framework.version>
     </properties>
 
 
@@ -61,6 +62,17 @@
             <artifactId>appengine-api-stubs</artifactId>
             <version>1.9.10</version>
             <scope>test</scope>
+        </dependency>
+        <!-- spring framework -->
+        <dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+            <version>${spring.framework.version}</version>
+        </dependency>
+        <dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+            <version>${spring.framework.version}</version>
         </dependency>
     </dependencies>
 
