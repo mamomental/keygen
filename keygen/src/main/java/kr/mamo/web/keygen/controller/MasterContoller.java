@@ -25,5 +25,6 @@ public class MasterContoller {
 		model.addAttribute("pbk", entity.getProperty("publicKey"));
 		model.addAttribute("prk", entity.getProperty("privateKey"));
         return "master/info";
+
 	}
 }
