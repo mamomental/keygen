@@ -2,29 +2,36 @@
 <html lang="ko" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 	<title layout:title-pattern="$CONTENT_TITLE :: $DECORATOR_TITLE">Site Tilte</title>
-	<meta charset="UTF-8" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	
 	<link type="text/css" rel="stylesheet" th:href="@{/stylesheets/pure-min.css}" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css"/>
+	<script th:src="@{/js/yui-min.js}" src="http://yui.yahooapis.com/3.18.0/build/yui/yui-min.js"></script>
+	<script th:src="@{/js/common-script.js}" src="/js/common-script.js"></script>
 </head>
 <body>
   <header layout:fragment="header">
 	<div class="header">
-	    <div class="home-menu pure-menu pure-menu-open pure-menu-horizontal">
-	        <a class="pure-menu-heading" href="">Your Site</a>
-	
-	        <ul>
-	            <li class="pure-menu-selected"><a href="#">Home</a></li>
-	            <li><a href="#">Tour</a></li>
-	            <li><a href="#">Sign Up</a></li>
-	        </ul>
-	    </div>
+		<div id="horizontal-menu">
+		    	<a class="pure-menu-heading" href="">Keygen</a>
+		    	<ul id="std-menu-items">
+		        <li th:if="${loginUser}">
+		            <a href="#" th:text="${userName}">userName</a>
+		            <ul>
+		                <li class="pure-menu-heading">function</li>
+		                <li class="pure-menu-separator"></li>
+		                <li><a th:href="${url}" href="#">logout</a></li>
+		            </ul>
+		        </li>
+	            <li th:unless="${loginUser}"><a th:href="${url}" href="#">login</a></li>
+		    </ul>
+		</div>
 	</div>
   </header>
   <section layout:fragment="content">
     <p>Layout Content</p>
   </section>
   <footer layout:fragment="footer">
-    <p>Layout Footer</p>
   </footer>
 </body>
 </html>

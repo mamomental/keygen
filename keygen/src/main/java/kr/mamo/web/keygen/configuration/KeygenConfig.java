@@ -1,12 +1,19 @@
 package kr.mamo.web.keygen.configuration;
 
+import kr.mamo.web.keygen.interceptor.AccountInterceptor;
+
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @Configuration
 @ComponentScan(basePackages = {"kr.mamo.web.keygen"})
 @EnableWebMvc
-public class KeygenConfig {
-
+public class KeygenConfig extends WebMvcConfigurerAdapter {
+	@Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new AccountInterceptor()).addPathPatterns("/**").excludePathPatterns("/");
+    }
 }
