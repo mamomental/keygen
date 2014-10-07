@@ -13,6 +13,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.framework.version>3.2.9.RELEASE</spring.framework.version>
         <thymeleaf.version>2.1.2.RELEASE</thymeleaf.version>
+        <thymeleaf.layout.version>1.2</thymeleaf.layout.version>
     </properties>
 
 
@@ -80,7 +81,12 @@
 			<groupId>org.thymeleaf</groupId>
 			<artifactId>thymeleaf-spring3</artifactId>
             <version>${thymeleaf.version}</version>
-        </dependency>        
+        </dependency>
+		<dependency>
+		  <groupId>nz.net.ultraq.thymeleaf</groupId>
+		  <artifactId>thymeleaf-layout-dialect</artifactId>
+		  <version>${thymeleaf.layout.version}</version>
+		</dependency>
     </dependencies>
     <build>
         <!-- for hot reload of the web application-->

@@ -2,6 +2,7 @@ package kr.mamo.web.keygen.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.thymeleaf.dialect.IDialect;
 import org.thymeleaf.spring3.SpringTemplateEngine;
 import org.thymeleaf.spring3.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
@@ -22,6 +23,7 @@ public class ThymeleafConfig {
 	public SpringTemplateEngine templateEngine() {
 		SpringTemplateEngine engine = new SpringTemplateEngine();
 		engine.setTemplateResolver(templateResolver());
+		engine.addDialect(layoutDialect());
 		return engine;
 	}
 	
@@ -31,5 +33,10 @@ public class ThymeleafConfig {
 		resolver.setTemplateEngine(templateEngine());
 		resolver.setCharacterEncoding("UTF-8");
 		return resolver;
+	}
+	
+	@Bean
+	public IDialect layoutDialect() {
+		return new nz.net.ultraq.thymeleaf.LayoutDialect();
 	}
 }
