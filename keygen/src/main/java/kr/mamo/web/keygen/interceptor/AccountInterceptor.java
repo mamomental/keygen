@@ -16,14 +16,14 @@ public class AccountInterceptor extends HandlerInterceptorAdapter {
         String thisURL = request.getRequestURI();
 		UserService userService = UserServiceFactory.getUserService();
 
-        if (request.getUserPrincipal() != null) {
-        		request.setAttribute("url", userService.createLogoutURL(thisURL));
-        		request.setAttribute("userName", request.getUserPrincipal().getName());
-        } else {
+        if (request.getUserPrincipal() == null) {
     		request.setAttribute("url", userService.createLoginURL(thisURL));
     		request.setAttribute("userName", "");
+    		response.sendRedirect("/");
+    		return false;
         }
-		
+		request.setAttribute("url", userService.createLogoutURL(thisURL));
+		request.setAttribute("userName", request.getUserPrincipal().getName());
 		return super.preHandle(request, response, handler);
 	}
 

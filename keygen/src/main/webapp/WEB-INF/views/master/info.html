@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorator="/layout/layout">
+<head>
+	<title>Index page</title>
+</head>
+<body>
+	<section layout:fragment="content">
+		<a class="pure-button" href="#">A Pure Button</a>
+		<table class="pure-table">
+		    <thead>
+		        <tr>
+		            <th>name</th>
+		            <th>pbk</th>
+		            <th>prk</th>
+		        </tr>
+		    </thead>
+		    <tbody>
+		        <tr>
+		            <td th:text="${name}">master name</td>
+		            <td th:text="${pbk}">master pbk</td>
+		            <td th:text="${prk}">master prk</td>
+		        </tr>
+		    </tbody>
+		</table>
+    </section>
+</body>
+</html>
