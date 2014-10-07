@@ -76,6 +76,16 @@
 			<artifactId>spring-webmvc</artifactId>
             <version>${spring.framework.version}</version>
         </dependency>
+        <dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+            <version>${spring.framework.version}</version>
+        </dependency>
+        <dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+            <version>${spring.framework.version}</version>
+        </dependency>
         <!-- template engine -->
         <dependency>
 			<groupId>org.thymeleaf</groupId>
@@ -87,6 +97,30 @@
 		  <artifactId>thymeleaf-layout-dialect</artifactId>
 		  <version>${thymeleaf.layout.version}</version>
 		</dependency>
+		
+		<!-- jdo -->
+        <dependency>
+            <groupId>javax.jdo</groupId>
+            <artifactId>jdo-api</artifactId>
+            <version>3.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.datanucleus</groupId>
+            <artifactId>datanucleus-core</artifactId>
+            <version>(3.9, )</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.datanucleus</groupId>
+            <artifactId>datanucleus-api-jdo</artifactId>
+            <version>(3.9, )</version>
+        </dependency>
+        <dependency>
+            <groupId>org.datanucleus</groupId>
+            <artifactId>datanucleus-rdbms</artifactId>
+            <version>(3.9, )</version>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
     <build>
         <!-- for hot reload of the web application-->
