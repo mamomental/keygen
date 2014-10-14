@@ -1,4 +1,4 @@
-package kr.mamo.web.keygen.datastore;
+package kr.mamo.web.keygen.db.datastore;
 
 import java.util.List;
 import java.util.Map;
@@ -35,13 +35,12 @@ public class DatastoreManager {
 		datastore.put(entity);
 	}
 	
-	public List<Entity> read(String tableString, Map<String, Object> map, int limit) {
+	public Entity selectOne(String tableString, FilterCallback filter) {
 		Query query = new Query(tableString);
 		
-		for (String column : map.keySet()) {
-			query.addFilter(column, FilterOperator.EQUAL, map.get(column));
-		}
-		return datastore.prepare(query).asList(FetchOptions.Builder.withLimit(limit));
+		query.setFilter(filter.filter());
+		
+		return datastore.prepare(query).asSingleEntity();
 	}
 	
 	public void update(String tableString, Map<String, Object> map) {

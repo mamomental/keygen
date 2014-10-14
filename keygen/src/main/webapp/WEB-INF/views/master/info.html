@@ -13,14 +13,16 @@
 		        <tr>
 		            <th>name</th>
 		            <th>pbk</th>
-		            <th>prk</th>
+		            <th>level</th>
+		            <th>test</th>
 		        </tr>
 		    </thead>
 		    <tbody>
 		        <tr>
-		            <td th:text="${info.name}">master name</td>
+		            <td th:text="${info.email}">master name</td>
 		            <td th:text="${info.publicKey}">master pbk</td>
-		            <td th:text="${test}">master prk</td>
+		            <td th:text="${info.level}">master level</td>
+		            <td th:text="${loginUser}">test</td>
 		        </tr>
 		    </tbody>
 		</table>

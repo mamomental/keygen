@@ -2,6 +2,8 @@ package kr.mamo.web.keygen.resolver;
 
 import javax.servlet.http.HttpServletRequest;
 
+import kr.mamo.web.keygen.KeygenConstant;
+
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -16,9 +18,9 @@ public class CurrentUserResolver implements HandlerMethodArgumentResolver {
 			WebDataBinderFactory binderFactory) throws Exception {
 		HttpServletRequest httpServletRequest = request.getNativeRequest(HttpServletRequest.class);
 		
-		String userName = (String)httpServletRequest.getAttribute("userName");
-		if (null != userName) {
-			return userName;
+		String currentUser = (String)httpServletRequest.getAttribute(KeygenConstant.keygenRequest.CURRENT_USER);
+		if (null != currentUser) {
+			return currentUser;
 		}
 		return null;
 	}

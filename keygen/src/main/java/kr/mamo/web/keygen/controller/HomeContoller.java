@@ -13,17 +13,17 @@ import com.google.appengine.api.users.UserServiceFactory;
 public class HomeContoller {
 	@RequestMapping(value = "/")
 	public String sayHello(HttpServletRequest req, Model model) {
-		UserService userService = UserServiceFactory.getUserService();
-        String thisURL = req.getRequestURI();
-
-        if (req.getUserPrincipal() != null) {
-			model.addAttribute("loginUser", true);
-			model.addAttribute("userName", req.getUserPrincipal().getName());
-			model.addAttribute("url", userService.createLogoutURL(thisURL));
-        } else {
-			model.addAttribute("loginUser", false);
-			model.addAttribute("url", userService.createLoginURL(thisURL));
-        }
+//		UserService userService = UserServiceFactory.getUserService();
+//        String thisURL = req.getRequestURI();
+//
+//        if (req.getUserPrincipal() != null) {
+//			model.addAttribute("loginUser", true);
+//			model.addAttribute("userName", req.getUserPrincipal().getName());
+//			model.addAttribute("url", userService.createLogoutURL(thisURL));
+//        } else {
+//			model.addAttribute("loginUser", false);
+//			model.addAttribute("url", userService.createLoginURL(thisURL));
+//        }
         return "index";
 	}
 }

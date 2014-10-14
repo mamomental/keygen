@@ -5,6 +5,7 @@ import java.util.List;
 import kr.mamo.web.keygen.interceptor.AccountInterceptor;
 import kr.mamo.web.keygen.resolver.CurrentUserResolver;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -18,7 +19,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 public class KeygenConfig extends WebMvcConfigurerAdapter {
 	@Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new AccountInterceptor()).addPathPatterns("/**").excludePathPatterns("/");
+        registry.addInterceptor(accountInterceptor()).addPathPatterns("/**")/*.excludePathPatterns("/")*/;
     }
 	
 	@Override
@@ -26,4 +27,9 @@ public class KeygenConfig extends WebMvcConfigurerAdapter {
         List<HandlerMethodArgumentResolver> argumentResolvers) {
 		argumentResolvers.add(new CurrentUserResolver());
     }
+	
+	@Bean
+	public AccountInterceptor accountInterceptor() {
+		return new AccountInterceptor();
+	}
 }

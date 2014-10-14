@@ -22,8 +22,8 @@ public class MasterContoller {
 	}
 	
 	@RequestMapping(value = "/register")
-	public String register(HttpServletRequest req, Model model, String userName) {
-		model.addAttribute("test", userName);
+	public String register(HttpServletRequest req, Model model, String currentUser) {
+		model.addAttribute("test", currentUser);
 		model.addAttribute("info", master.info());
         return "master/info";
 	}
