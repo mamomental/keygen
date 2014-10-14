@@ -6,6 +6,7 @@ import java.security.NoSuchAlgorithmException;
 import kr.mamo.web.keygen.db.datastore.DatastoreManager;
 import kr.mamo.web.keygen.db.datastore.FilterCallback;
 import kr.mamo.web.keygen.db.model.User;
+import kr.mamo.web.keygen.util.Base64;
 import kr.mamo.web.keygen.util.RSA;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class MasterService {
 	
 	@Autowired
 	RSA rsa;
+	
+	@Autowired
+	Base64 base64;
 	
 	public User info() {
 		Entity entity = datastoreManager.selectOne(TABLE, new FilterCallback() {
@@ -49,8 +53,8 @@ public class MasterService {
 		try {
 			KeyPair keypair = rsa.generateRSAKeys();
 			user.setLevel(User.LEVEL.MASTER.getLevel());
-			user.setPublicKey(new String(keypair.getPublic().getEncoded()));
-			user.setPrivateKey(new String(keypair.getPrivate().getEncoded()));
+			user.setPublicKey(base64.encode(keypair.getPublic().getEncoded()));
+			user.setPrivateKey(base64.encode(keypair.getPrivate().getEncoded()));
 			datastoreManager.insert(user.toEntity());
 			return true;
 		} catch (NoSuchAlgorithmException e) {
