@@ -6,8 +6,8 @@ import java.security.NoSuchAlgorithmException;
 import kr.mamo.web.keygen.db.datastore.DatastoreManager;
 import kr.mamo.web.keygen.db.datastore.FilterCallback;
 import kr.mamo.web.keygen.db.model.User;
-import kr.mamo.web.keygen.util.Base64;
-import kr.mamo.web.keygen.util.RSA;
+import kr.mamo.web.keygen.util.Base64Util;
+import kr.mamo.web.keygen.util.RSAUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,10 +24,10 @@ public class MasterService {
 	DatastoreManager datastoreManager;
 	
 	@Autowired
-	RSA rsa;
+	RSAUtil rsa;
 	
 	@Autowired
-	Base64 base64;
+	Base64Util base64;
 	
 	public User info() {
 		Entity entity = datastoreManager.selectOne(TABLE, new FilterCallback() {

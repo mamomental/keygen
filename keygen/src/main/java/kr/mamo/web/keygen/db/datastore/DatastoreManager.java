@@ -2,7 +2,7 @@ package kr.mamo.web.keygen.db.datastore;
 
 import java.util.Map;
 
-import kr.mamo.web.keygen.util.RSA;
+import kr.mamo.web.keygen.util.RSAUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,7 @@ import com.google.appengine.api.datastore.Query.FilterOperator;
 @Component
 public class DatastoreManager {
 	@Autowired
-	RSA rsa;
+	RSAUtil rsa;
 
 	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 

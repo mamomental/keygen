@@ -3,7 +3,7 @@ package kr.mamo.web.keygen.util;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Base64 {
+public class Base64Util {
 	public String encode(byte[] data) {
 		return new String(org.apache.commons.codec.binary.Base64.encodeBase64(data));
 	}

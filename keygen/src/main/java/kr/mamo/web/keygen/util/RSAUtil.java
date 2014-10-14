@@ -7,7 +7,7 @@ import java.security.NoSuchAlgorithmException;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RSA {
+public class RSAUtil {
 	public KeyPair generateRSAKeys() throws NoSuchAlgorithmException {
 		KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
 		generator.initialize(512);

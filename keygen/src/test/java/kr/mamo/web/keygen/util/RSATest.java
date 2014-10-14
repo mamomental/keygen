@@ -9,7 +9,7 @@ import org.junit.Test;
 public class RSATest {
 	@Test
 	public void test() {
-		RSA rsa = new RSA();
+		RSAUtil rsa = new RSAUtil();
 		KeyPair keypair;
 		try {
 			keypair = rsa.generateRSAKeys();

@@ -16,6 +16,8 @@
 		<div id="horizontal-menu">
 		    	<a class="pure-menu-heading" href="">Keygen</a>
 		    	<ul id="std-menu-items">
+		        <li th:if="${level.level == 0}" ><a th:href="@{/user/info}" href="#">user</a></li>
+		        <li th:if="${level.level > 0}" ><a th:href="@{/key/list}" href="#">key</a></li>
 		        <li th:if="${level.level == 10}" ><a th:href="@{/master/info}" href="#">master</a></li>
 		        <li th:if="${loginUser}">
 		            <a href="#" th:text="${currentUser} + ' (' + ${level.description} +')' ">userName</a>
