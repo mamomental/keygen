@@ -1,6 +1,5 @@
 package kr.mamo.web.keygen.db.datastore;
 
-import java.util.List;
 import java.util.Map;
 
 import kr.mamo.web.keygen.util.RSA;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Component;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
@@ -25,13 +23,7 @@ public class DatastoreManager {
 
 	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-	public void create(String tableString, String keyString, Map<String, Object> map) {
-		Key key = KeyFactory.createKey(tableString, keyString);
-		Entity entity = new Entity(tableString, key);
-		
-		for (String column : map.keySet()) {
-			entity.setProperty(column, map.get(column));
-		}
+	public void insert(Entity entity) {
 		datastore.put(entity);
 	}
 	
@@ -58,14 +50,10 @@ public class DatastoreManager {
 		datastore.put(entity);
 	}
 	
-	public void delete(String tableString, String keyString, Map<String, Object> map) {
+	public void delete(String tableString, FilterCallback filter) {
 		Query query = new Query(tableString);
-		
-		for (String column : map.keySet()) {
-			query.addFilter(column, FilterOperator.EQUAL, map.get(column));
-		}
-		PreparedQuery pq = datastore.prepare(query);
-		Entity entity = pq.asSingleEntity();
+		query.setFilter(filter.filter());
+		Entity entity = datastore.prepare(query).asSingleEntity();
 		datastore.delete(entity.getKey());
 	}
 }

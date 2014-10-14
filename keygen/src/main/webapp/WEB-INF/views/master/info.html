@@ -7,7 +7,8 @@
 </head>
 <body>
 	<section layout:fragment="content">
-		<a class="pure-button" href="#">A Pure Button</a>
+		<button th:if="${info}" class="pure-button" id="btn_delete">delete master</button>
+		<button th:unless="${info}" class="pure-button" id="btn_register">register master</button>
 		<table class="pure-table">
 		    <thead>
 		        <tr>
@@ -18,7 +19,7 @@
 		        </tr>
 		    </thead>
 		    <tbody>
-		        <tr>
+		        <tr th:if="${info}">
 		            <td th:text="${info.email}">master name</td>
 		            <td th:text="${info.publicKey}">master pbk</td>
 		            <td th:text="${info.level}">master level</td>
@@ -26,6 +27,18 @@
 		        </tr>
 		    </tbody>
 		</table>
+    </section>
+	<section layout:fragment="script">
+        <script th:inline="javascript">
+    	$(document).ready(function() {
+    		$( "#btn_register" ).click(function() {
+				location.href="/master/register";
+    		});
+    		$( "#btn_delete" ).click(function() {
+				location.href="/master/unregister";
+    		});
+    	});
+    </script>
     </section>
 </body>
 </html>

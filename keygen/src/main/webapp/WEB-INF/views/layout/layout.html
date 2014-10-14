@@ -8,6 +8,7 @@
 	<link type="text/css" rel="stylesheet" th:href="@{/stylesheets/pure-min.css}" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css"/>
 	<script th:src="@{/js/yui-min.js}" src="http://yui.yahooapis.com/3.18.0/build/yui/yui-min.js"></script>
 	<script th:src="@{/js/common-script.js}" src="/js/common-script.js"></script>
+	<script th:src="@{/js/jquery-latest.min.js}" src="http://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 <body>
   <header layout:fragment="header">
@@ -31,7 +32,7 @@
   <section layout:fragment="content">
     <p>Layout Content</p>
   </section>
-  <footer layout:fragment="footer">
-  </footer>
+  <section layout:fragment="script"></section>
+  <footer layout:fragment="footer"></footer>
 </body>
 </html>

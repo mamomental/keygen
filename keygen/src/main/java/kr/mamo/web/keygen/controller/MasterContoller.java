@@ -23,8 +23,13 @@ public class MasterContoller {
 	
 	@RequestMapping(value = "/register")
 	public String register(HttpServletRequest req, Model model, String currentUser) {
-		model.addAttribute("test", currentUser);
-		model.addAttribute("info", master.info());
-        return "master/info";
+		master.register(currentUser);
+		return "redirect:/master/info";
+	}
+	
+	@RequestMapping(value = "/unregister")
+	public String unregister(HttpServletRequest req, Model model, String currentUser) {
+		master.unregister(currentUser);
+		return "redirect:/master/info";
 	}
 }

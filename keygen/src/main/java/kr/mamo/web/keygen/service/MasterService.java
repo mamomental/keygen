@@ -1,7 +1,7 @@
 package kr.mamo.web.keygen.service;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.security.KeyPair;
+import java.security.NoSuchAlgorithmException;
 
 import kr.mamo.web.keygen.db.datastore.DatastoreManager;
 import kr.mamo.web.keygen.db.datastore.FilterCallback;
@@ -26,8 +26,6 @@ public class MasterService {
 	RSA rsa;
 	
 	public User info() {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("name", "master");
 		Entity entity = datastoreManager.selectOne(TABLE, new FilterCallback() {
 			@Override
 			public Filter filter() {
@@ -42,12 +40,38 @@ public class MasterService {
 		return null;
 	}
 	
-	public void register(String email) {
+	public boolean register(String email) {
+		User user = info();
+		if (null != user) return false;
 		
+		user = new User();
+		user.setEmail(email);
+		try {
+			KeyPair keypair = rsa.generateRSAKeys();
+			user.setLevel(User.LEVEL.MASTER.getLevel());
+			user.setPublicKey(new String(keypair.getPublic().getEncoded()));
+			user.setPrivateKey(new String(keypair.getPrivate().getEncoded()));
+			datastoreManager.insert(user.toEntity());
+			return true;
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public boolean unregister(final String email) {
+		User user = info();
+		if (null == user) return false;
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("name", "master");
-		map.put("email", email);
-		datastoreManager.update(TABLE, map);
+		if (user.getEmail().equals(email)) {
+			datastoreManager.delete(TABLE, new FilterCallback() {
+				@Override
+				public Filter filter() {
+					return new FilterPredicate("email", FilterOperator.EQUAL, email);
+				}
+			});
+			return true;
+		}
+		return false;
 	}
 }

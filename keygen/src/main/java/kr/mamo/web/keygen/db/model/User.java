@@ -7,19 +7,12 @@ import com.google.appengine.api.datastore.Entity;
 public class User implements EntityInterface {
 	public static final String TABLE = "User";
 	
-	private long keyId;
 	private String email;
 	private int level = LEVEL.ANONYMOUS.getLevel();
 	private String publicKey;
 	private String privateKey;
 	
 	
-	public long getKeyId() {
-		return keyId;
-	}
-	public void setKeyId(long keyId) {
-		this.keyId = keyId;
-	}
 	public String getEmail() {
 		return email;
 	}
@@ -49,8 +42,6 @@ public class User implements EntityInterface {
 	}
 	public static User build(Entity entity) {
 		User user = new User();
-		user.setKeyId(entity.getKey().getId());
-
 		Object email = entity.getProperty("email");
 		if (null != email) {
 			user.setEmail((String)email);
