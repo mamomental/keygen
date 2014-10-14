@@ -4,7 +4,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import kr.mamo.web.keygen.KeygenConstant;
+import kr.mamo.web.keygen.db.model.User;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -13,7 +15,9 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
 public class AccountInterceptor extends HandlerInterceptorAdapter {
-
+	@Autowired
+	kr.mamo.web.keygen.service.UserService us;
+	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String thisURL = request.getRequestURI();
@@ -48,10 +52,16 @@ public class AccountInterceptor extends HandlerInterceptorAdapter {
 		
 		if (StringUtils.isEmpty(currentUser)) {
 			modelAndView.addObject("loginUser", false);
+			modelAndView.addObject(KeygenConstant.keygenRequest.CURRENT_USER_LEVEL, User.LEVEL.ANONYMOUS);
 		} else {
 			modelAndView.addObject("loginUser", true);
+			User user = us.info(currentUser);
+			if (null != user) {
+				modelAndView.addObject(KeygenConstant.keygenRequest.CURRENT_USER_LEVEL, User.LEVEL.fromLevel(user.getLevel()));
+			} else {
+				modelAndView.addObject(KeygenConstant.keygenRequest.CURRENT_USER_LEVEL, User.LEVEL.ANONYMOUS);
+			}
 		}
-		
 		modelAndView.addObject(KeygenConstant.keygenRequest.CURRENT_USER, currentUser);
 
 		

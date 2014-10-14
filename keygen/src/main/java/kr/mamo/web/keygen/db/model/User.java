@@ -73,6 +73,7 @@ public class User implements EntityInterface {
 	
 	public enum LEVEL {
 			MASTER (10, "master")
+		,	BASIC (1, "basic")
 		,	ANONYMOUS (0, "anonymous")
 		;
 		int level;
@@ -98,5 +99,15 @@ public class User implements EntityInterface {
 		public void setDescription(String description) {
 			this.description = description;
 		}
+		
+		public static LEVEL fromLevel(int level) {
+			for (LEVEL l : LEVEL.values()) {
+				if (l.getLevel() == level) {
+					return l;
+				}
+			}
+			return null;
+		}
+
 	}
 }
