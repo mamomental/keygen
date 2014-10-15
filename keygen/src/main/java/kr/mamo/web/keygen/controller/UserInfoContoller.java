@@ -2,41 +2,39 @@ package kr.mamo.web.keygen.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
-import kr.mamo.web.keygen.service.UserService;
+import kr.mamo.web.keygen.service.SiteInfoService;
+import kr.mamo.web.keygen.service.UserInfoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/user")
-public class UserContoller {
+public class UserInfoContoller {
 	@Autowired
-	UserService us;
+	UserInfoService userInfoService;
+	
+	@Autowired
+	SiteInfoService siteInfoService;
 
 	@RequestMapping(value = "/info")
 	public String info(HttpServletRequest req, Model model, String currentUser) {
-		model.addAttribute("info", us.info(currentUser));
+		model.addAttribute("info", userInfoService.info(currentUser));
         return "user/info";
 	}
 	
 	@RequestMapping(value = "/create")
 	public String register(HttpServletRequest req, Model model, String currentUser) {
-		us.create(currentUser);
-		return "redirect:/user/info";
+		userInfoService.create(currentUser);
+		return "redirect:/";
 	}
 	
 	@RequestMapping(value = "/delete")
 	public String delete(HttpServletRequest req, Model model, String currentUser) {
-		us.delete(currentUser);
-		return "redirect:/user/info";
-	}
-	
-	@RequestMapping(value = "/ajax")
-	@ResponseBody
-	public String ajax(HttpServletRequest req, Model model, String currentUser) {
-		return "test";
+		siteInfoService.delete(currentUser, null);
+		userInfoService.delete(currentUser);
+		return "redirect:/";
 	}
 }

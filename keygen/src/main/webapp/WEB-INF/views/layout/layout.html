@@ -6,9 +6,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
 	
 	<link type="text/css" rel="stylesheet" th:href="@{/stylesheets/pure-min.css}" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css"/>
+	<link type="text/css" rel="stylesheet" th:href="@{/stylesheets/jquery-ui.css}" href="http://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
 	<script th:src="@{/js/yui-min.js}" src="http://yui.yahooapis.com/3.18.0/build/yui/yui-min.js"></script>
 	<script th:src="@{/js/common-script.js}" src="/js/common-script.js"></script>
 	<script th:src="@{/js/jquery-latest.min.js}" src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script th:src="@{/js/jquery-ui.js}" src="http://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
 </head>
 <body>
   <header layout:fragment="header">
@@ -16,14 +18,15 @@
 		<div id="horizontal-menu">
 		    	<a class="pure-menu-heading" href="">Keygen</a>
 		    	<ul id="std-menu-items">
-		        <li th:if="${level.level == 0}" ><a th:href="@{/user/info}" href="#">user</a></li>
-		        <li th:if="${level.level > 0}" ><a th:href="@{/key/list}" href="#">key</a></li>
+		        <li th:if="${level.level > 0}" ><a th:href="@{/site/list}" href="#">site</a></li>
 		        <li th:if="${level.level == 10}" ><a th:href="@{/master/info}" href="#">master</a></li>
 		        <li th:if="${loginUser}">
 		            <a href="#" th:text="${currentUser} + ' (' + ${level.description} +')' ">userName</a>
 		            <ul>
 		                <li class="pure-menu-heading">function</li>
 		                <li class="pure-menu-separator"></li>
+		                <li th:if="${level.level==0}"><a href="/user/create">use site info</a></li>
+		                <li th:if="${level.level>0}"><a href="/user/delete">don't use site info</a></li>
 		                <li><a th:href="${url}" href="#">logout</a></li>
 		            </ul>
 		        </li>

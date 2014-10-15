@@ -2,7 +2,6 @@ package kr.mamo.web.keygen.util;
 
 import java.io.UnsupportedEncodingException;
 import java.security.KeyPair;
-import java.security.NoSuchAlgorithmException;
 
 import org.junit.Test;
 
@@ -17,8 +16,6 @@ public class RSATest {
 			String prk = new String(keypair.getPrivate().getEncoded(), "UTF-8");
 			System.out.println("pbk : " + pbk.length() + ", " + pbk);
 			System.out.println("prk : " + prk.length() + ", " + prk);
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}

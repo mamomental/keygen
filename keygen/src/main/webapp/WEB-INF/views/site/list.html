@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorator="/layout/layout">
+<head>
+	<title>SiteInfo</title>
+</head>
+<body>
+	<section layout:fragment="content">
+		<button class="pure-button" id="btn_create">create or update site info</button>
+		<input type="text" name="encKey" id="encKey" value="" class="text ui-widget-content ui-corner-all" />
+		<button class="pure-button" id="btn_list">decrypt</button>
+		<table class="pure-table">
+		    <thead>
+		        <tr>
+		            <th>site</th>
+		            <th>id</th>
+		            <th>password</th>
+		        </tr>
+		    </thead>
+		    <tbody id="site_info">
+		    	<tr th:each="info : ${list}">
+		    		<td th:text="${info.siteName}">site</td>
+		    		<td th:text="${info.siteId}">id</td>
+		    		<td th:text="${info.sitePw}">pw</td>
+		    	</tr>
+		    </tbody>
+		</table>
+		<div id="dialog-form" title="Create new Site Info">
+		  <form>
+		    <fieldset>
+		      <label for="siteName">siteName</label>
+		      <input type="text" name="siteName" id="siteName" value="" class="text ui-widget-content ui-corner-all" />
+		      <label for="siteId">siteId</label>
+		      <input type="text" name="siteId" id="siteId" value="" class="text ui-widget-content ui-corner-all" />
+		      <label for="sitePw">sitePw</label>
+		      <input type="password" name="sitePw" id="sitePw" value="" class="text ui-widget-content ui-corner-all" />
+		    </fieldset>
+		  </form>
+		</div>
+    </section>
+	<section layout:fragment="script">
+        <script th:inline="javascript">
+        // <![CDATA[
+    	$(document).ready(function() {
+    		var dialog, form,
+    	      siteName = $( "#siteName" ),
+    	      siteId = $( "#siteId" ),
+    	      sitePw = $( "#sitePw" ),
+    	      allFields = $( [] ).add( siteName ).add( siteId ).add( sitePw );
+    		
+    	    function createSiteInfo() {
+    	        var valid = true;
+    	        allFields.removeClass( "ui-state-error" );
+    	        if ( valid ) {
+        			var request = $.ajax({
+        				url : '/site/create',
+        				type:'GET',
+        				data:{siteName:siteName.val(),siteId:siteId.val(),sitePw:sitePw.val()}
+        			});
+    				request.done(function(data) {
+    					location.href="/site/list";
+    				});
+    	          dialog.dialog( "close" );
+    	        }
+    	        return valid;
+    	      }
+    		
+    	    dialog = $( "#dialog-form" ).dialog({
+    	        autoOpen: false,
+    	        height: 300,
+    	        width: 350,
+    	        modal: true,
+    	        buttons: {
+    	          "Create a siteInfo": createSiteInfo,
+    	          Cancel: function() {
+    	            dialog.dialog( "close" );
+    	          }
+    	        },
+    	        close: function() {
+    	            form[ 0 ].reset();
+    	            allFields.removeClass( "ui-state-error" );
+    	        }
+    	      });
+    	   
+    	      form = dialog.find( "form" ).on( "submit", function( event ) {
+    	        event.preventDefault();
+    	        createSiteInfo();
+    	      });
+    	   
+    	      $( "#btn_create" ).button().on( "click", function() {
+    	        dialog.dialog( "open" );
+    	      });
+    	      
+    	      $( "#btn_list" ).button().on( "click", function() {
+				var encKey = $( "#encKey" ).val();
+    			var request = $.ajax({
+    				url : '/site/decList',
+    				type:"GET",
+    				data:{encKey:encKey},
+    				dataType: "json"
+    			});
+				request.done(function(data) {
+						$( "#encKey" ).val('');
+						$("#site_info").empty();
+						for (i = 0; i < data.length; i++) {
+							var siteInfo = data[i];
+							$("#site_info").append('<tr><td>'+siteInfo.siteName+'</td><td>'+siteInfo.siteId+'</td><td>'+siteInfo.sitePw+'</td></tr>');
+						}
+				});
+      	      });
+    	});
+    	// ]]>
+    </script>
+    </section>
+</body>
+</html>

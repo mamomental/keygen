@@ -6,4 +6,8 @@ public class KeygenConstant {
 		String CURRENT_USER = "currentUser";
 		String CURRENT_USER_LEVEL = "level";
 	}
+	
+	public interface keygenCommon {
+		String ENCODING = "UTF-8";
+	}
 }

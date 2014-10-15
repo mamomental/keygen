@@ -16,7 +16,7 @@ import com.google.appengine.api.users.UserServiceFactory;
 
 public class AccountInterceptor extends HandlerInterceptorAdapter {
 	@Autowired
-	kr.mamo.web.keygen.service.UserService us;
+	kr.mamo.web.keygen.service.UserInfoService us;
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

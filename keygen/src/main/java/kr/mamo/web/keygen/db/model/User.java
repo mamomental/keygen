@@ -63,7 +63,8 @@ public class User implements EntityInterface {
 	}
 	@Override
 	public Entity toEntity() {
-		Entity entity = new Entity(TABLE, email);
+//		Entity entity = new Entity(TABLE, email);
+		Entity entity = new Entity(TABLE);
 		entity.setProperty("email", email);
 		entity.setProperty("level", level);
 		entity.setProperty("publicKey", publicKey);

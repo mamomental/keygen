@@ -1,24 +1,19 @@
 package kr.mamo.web.keygen.db.datastore;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
-import kr.mamo.web.keygen.util.RSAUtil;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
-import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Transaction;
 
 @Component
 public class DatastoreManager {
-	@Autowired
-	RSAUtil rsa;
-
 	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
 	public void insert(Entity entity) {
@@ -26,32 +21,40 @@ public class DatastoreManager {
 	}
 	
 	public Entity selectOne(String tableString, FilterCallback filter) {
-		Query query = new Query(tableString);
-		
-		query.setFilter(filter.filter());
+		Query query = new Query(tableString).setFilter(filter.filter());
 		
 		return datastore.prepare(query).asSingleEntity();
 	}
 	
-	public void update(String tableString, Map<String, Object> map) {
-		Query query = new Query(tableString);
-		
-		for (String column : map.keySet()) {
-			query.addFilter(column, FilterOperator.EQUAL, map.get(column));
+	public List<Entity> selectList(String tableString, FilterCallback filter) {
+		Query query = new Query(tableString).setFilter(filter.filter());
+		List<Entity> result = new ArrayList<Entity>();
+		Iterable<Entity> list = datastore.prepare(query).asIterable();
+		for (Entity entity : list) {
+			result.add(entity);
 		}
-		PreparedQuery pq = datastore.prepare(query);
-		Entity entity = pq.asSingleEntity();
-		
-		for (String column : map.keySet()) {
-			entity.setProperty(column, map.get(column));
+		return result;
+	}
+	
+	public void update(String tableString, FilterCallback filter, Entity updatedEntity) {
+		Entity entity = selectOne(tableString, filter);
+		if (null != entity) {
+			Map<String, Object> map = updatedEntity.getProperties();
+			for (String column : map.keySet()) {
+				entity.setProperty(column, map.get(column));
+			}
+			datastore.put(entity);
 		}
-		datastore.put(entity);
 	}
 	
 	public void delete(String tableString, FilterCallback filter) {
 		Query query = new Query(tableString);
 		query.setFilter(filter.filter());
-		Entity entity = datastore.prepare(query).asSingleEntity();
-		datastore.delete(entity.getKey());
+		Transaction tx = datastore.beginTransaction();
+		Iterable<Entity> list = datastore.prepare(query).asIterable();
+		for (Entity entity : list) {
+			datastore.delete(entity.getKey());
+		}
+		tx.commit();
 	}
 }

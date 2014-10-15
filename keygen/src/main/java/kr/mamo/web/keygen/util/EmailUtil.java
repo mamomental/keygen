@@ -20,7 +20,7 @@ public class EmailUtil {
 			Properties props = new Properties();
 			Session session = Session.getDefaultInstance(props, null);
 			Message msg = new MimeMessage(session);
-		    msg.setFrom(new InternetAddress(from, "mamokeygen master"));
+		    msg.setFrom(new InternetAddress(from, "mamokeygen"));
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(to, to));
 		    msg.setSubject("your private code");
 		    msg.setText(msgBody);

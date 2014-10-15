@@ -19,7 +19,6 @@ import com.google.appengine.api.datastore.Query.FilterPredicate;
 
 @Service
 public class MasterService {
-	private static final String TABLE = "User";
 	@Autowired
 	DatastoreManager datastoreManager;
 	
@@ -30,7 +29,7 @@ public class MasterService {
 	Base64Util base64;
 	
 	public User info() {
-		Entity entity = datastoreManager.selectOne(TABLE, new FilterCallback() {
+		Entity entity = datastoreManager.selectOne(User.TABLE, new FilterCallback() {
 			@Override
 			public Filter filter() {
 				return new FilterPredicate("level", FilterOperator.EQUAL, User.LEVEL.MASTER.getLevel());
@@ -50,17 +49,12 @@ public class MasterService {
 		
 		user = new User();
 		user.setEmail(email);
-		try {
-			KeyPair keypair = rsa.generateRSAKeys();
-			user.setLevel(User.LEVEL.MASTER.getLevel());
-			user.setPublicKey(base64.encode(keypair.getPublic().getEncoded()));
-			user.setPrivateKey(base64.encode(keypair.getPrivate().getEncoded()));
-			datastoreManager.insert(user.toEntity());
-			return true;
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-		return false;
+		KeyPair keypair = rsa.generateRSAKeys();
+		user.setLevel(User.LEVEL.MASTER.getLevel());
+		user.setPublicKey(base64.encode(keypair.getPublic().getEncoded()));
+		user.setPrivateKey(base64.encode(keypair.getPrivate().getEncoded()));
+		datastoreManager.insert(user.toEntity());
+		return true;
 	}
 	
 	public boolean unregister(final String email) {
@@ -68,7 +62,7 @@ public class MasterService {
 		if (null == user) return false;
 		
 		if (user.getEmail().equals(email)) {
-			datastoreManager.delete(TABLE, new FilterCallback() {
+			datastoreManager.delete(User.TABLE, new FilterCallback() {
 				@Override
 				public Filter filter() {
 					return new FilterPredicate("email", FilterOperator.EQUAL, email);
