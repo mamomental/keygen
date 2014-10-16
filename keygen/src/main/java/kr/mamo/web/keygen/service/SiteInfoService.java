@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
 import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
@@ -59,7 +60,7 @@ public class SiteInfoService {
 	public List<SiteInfo> list(String privateKey, String encKey, final String email) {
 		
 		
-		List<Entity> entity = datastoreManager.selectList(SiteInfo.TABLE, new FilterCallback() {
+		List<Entity> entity = datastoreManager.selectList(KeygenConstant.DataStore.TABLE_SITE_INFO, new FilterCallback() {
 			@Override
 			public Filter filter() {
 				return new FilterPredicate("email", FilterOperator.EQUAL, email);
@@ -85,7 +86,7 @@ public class SiteInfoService {
 	}
 	
 	public SiteInfo read(final String email, final String siteName) {
-		Entity entity = datastoreManager.selectOne(SiteInfo.TABLE, new FilterCallback() {
+		Entity entity = datastoreManager.selectOne(KeygenConstant.DataStore.TABLE_SITE_INFO, new FilterCallback() {
 			@Override
 			public Filter filter() {
 				Filter emailFilter = new FilterPredicate("email", FilterOperator.EQUAL, email);
@@ -106,8 +107,15 @@ public class SiteInfoService {
 		SiteInfo siteInfo = read(email, siteName);
 		if (null == siteInfo) return false;
 		siteInfo.setSiteId(siteId);
-		siteInfo.setSitePw(sitePw);
-		datastoreManager.update(SiteInfo.TABLE, new FilterCallback() {
+		
+		try {
+			siteInfo.setSitePw(base64Util.encode(rsaUtil.encrypt(rsaUtil.bytesToPubKey(base64Util.decode(publicKey)), sitePw.getBytes(KeygenConstant.keygenCommon.ENCODING))));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return false;
+		}
+
+		datastoreManager.update(KeygenConstant.DataStore.TABLE_SITE_INFO, new FilterCallback() {
 			@Override
 			public Filter filter() {
 				Filter emailFilter = new FilterPredicate("email", FilterOperator.EQUAL, email);
@@ -120,7 +128,7 @@ public class SiteInfoService {
 
 	public boolean delete(final String email, final String siteName) {
 		if (null == siteName) { // all info
-			datastoreManager.delete(SiteInfo.TABLE, new FilterCallback() {
+			datastoreManager.delete(KeygenConstant.DataStore.TABLE_SITE_INFO, new FilterCallback() {
 				@Override
 				public Filter filter() {
 					return new FilterPredicate("email", FilterOperator.EQUAL, email);
@@ -130,7 +138,7 @@ public class SiteInfoService {
 			SiteInfo siteInfo = read(email, siteName);
 			if (null == siteInfo) return false;
 			
-			datastoreManager.delete(SiteInfo.TABLE, new FilterCallback() {
+			datastoreManager.delete(KeygenConstant.DataStore.TABLE_SITE_INFO, new FilterCallback() {
 				@Override
 				public Filter filter() {
 					Filter emailFilter = new FilterPredicate("email", FilterOperator.EQUAL, email);
@@ -141,6 +149,11 @@ public class SiteInfoService {
 			});
 		}
 
+		return true;
+	}
+	
+	public boolean delete(final long keyId) {
+		datastoreManager.delete(KeyFactory.createKey(KeygenConstant.DataStore.TABLE_SITE_INFO, keyId));
 		return true;
 	}
 }

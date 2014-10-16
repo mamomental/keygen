@@ -3,6 +3,7 @@ package kr.mamo.web.keygen.service;
 import java.security.Key;
 import java.security.KeyPair;
 
+import kr.mamo.web.keygen.KeygenConstant;
 import kr.mamo.web.keygen.db.datastore.DatastoreManager;
 import kr.mamo.web.keygen.db.datastore.FilterCallback;
 import kr.mamo.web.keygen.db.model.User;
@@ -37,7 +38,7 @@ public class UserInfoService {
 	EmailUtil emailUtil;
 	
 	public User info(final String email) {
-		Entity entity = datastoreManager.selectOne(User.TABLE, new FilterCallback() {
+		Entity entity = datastoreManager.selectOne(KeygenConstant.DataStore.TABLE_USER_INFO, new FilterCallback() {
 			@Override
 			public Filter filter() {
 				return new FilterPredicate("email", FilterOperator.EQUAL, email);
@@ -72,7 +73,7 @@ public class UserInfoService {
 		if (null == user) return false;
 		
 		if (user.getEmail().equals(email)) {
-			datastoreManager.delete(User.TABLE, new FilterCallback() {
+			datastoreManager.delete(KeygenConstant.DataStore.TABLE_USER_INFO, new FilterCallback() {
 				@Override
 				public Filter filter() {
 					return new FilterPredicate("email", FilterOperator.EQUAL, email);

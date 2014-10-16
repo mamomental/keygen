@@ -16,6 +16,7 @@
 		            <th>site</th>
 		            <th>id</th>
 		            <th>password</th>
+		            <th>delete</th>
 		        </tr>
 		    </thead>
 		    <tbody id="site_info">
@@ -23,6 +24,7 @@
 		    		<td th:text="${info.siteName}">site</td>
 		    		<td th:text="${info.siteId}">id</td>
 		    		<td th:text="${info.sitePw}">pw</td>
+		    		<td><delbtn th:value="${info.keyId}">X</delbtn></td>
 		    	</tr>
 		    </tbody>
 		</table>
@@ -68,11 +70,11 @@
     		
     	    dialog = $( "#dialog-form" ).dialog({
     	        autoOpen: false,
-    	        height: 300,
-    	        width: 350,
+    	        height: 350,
+    	        width: 300,
     	        modal: true,
     	        buttons: {
-    	          "Create a siteInfo": createSiteInfo,
+    	          "Create": createSiteInfo,
     	          Cancel: function() {
     	            dialog.dialog( "close" );
     	          }
@@ -92,6 +94,21 @@
     	        dialog.dialog( "open" );
     	      });
     	      
+    	      $( "delbtn" ).button().on( "click", function() {
+      	        if (confirm('delete?')) {
+      	        	var keyId = $(this).attr("value");
+        			var request = $.ajax({
+        				url : '/site/delete',
+        				type:"GET",
+        				data:{keyId:keyId},
+        				dataType: "json"
+        			});
+    				request.done(function(data) {
+    					location.reload();
+    				});
+      	        }
+      	      });
+    	      
     	      $( "#btn_list" ).button().on( "click", function() {
 				var encKey = $( "#encKey" ).val();
     			var request = $.ajax({
@@ -105,7 +122,7 @@
 						$("#site_info").empty();
 						for (i = 0; i < data.length; i++) {
 							var siteInfo = data[i];
-							$("#site_info").append('<tr><td>'+siteInfo.siteName+'</td><td>'+siteInfo.siteId+'</td><td>'+siteInfo.sitePw+'</td></tr>');
+							$("#site_info").append('<tr><td>'+siteInfo.siteName+'</td><td>'+siteInfo.siteId+'</td><td>'+siteInfo.sitePw+'</td><td><delbtn value="'+siteInfo.keyId +'">X</delbtn></td></tr>');
 						}
 				});
       	      });

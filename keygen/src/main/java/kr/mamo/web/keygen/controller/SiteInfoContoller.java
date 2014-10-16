@@ -48,4 +48,11 @@ public class SiteInfoContoller {
 		}
 		return "ok";
 	}
+	
+	@RequestMapping(value = "/delete")
+	@ResponseBody
+	public String delete(HttpServletRequest req, Model model, String currentUser, @RequestParam(required=true, value="keyId") long keyId) {
+		siteInfoService.delete(keyId);
+		return "ok";
+	}
 }
